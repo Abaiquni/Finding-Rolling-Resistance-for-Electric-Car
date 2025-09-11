@@ -1,23 +1,23 @@
-# 🚗 Coastdown Test - Perhitungan Coefficient of Rolling Resistance (CRR)
+#  Coastdown Test - Estimation of Rolling Resistance Coefficient (CRR)
 
-## 📖 Deskripsi
-Proyek ini mendokumentasikan metode **Coastdown Test** untuk menghitung:
+##  Description
+This project documents the **Coastdown Test** method to estimate:
 - **CRR (Coefficient of Rolling Resistance)**
-- **Parameter aerodinamika (Cd·Af)**
+- **Aerodynamic parameter (Cd·Af)**
 
-Metode mengikuti standar **SAE J1263 / J2263**, dengan coastdown dalam **dua arah berlawanan** untuk menghilangkan efek elevasi (slope).
+The procedure follows **SAE J1263 / J2263** standards, using coastdown runs in **two opposite directions** to eliminate the effect of road slope (grade).
 
 ---
 
-## ⚙️ Prinsip Fisika
+## ⚙️ Physics Principle
 
-Saat kendaraan meluncur bebas:
+When a vehicle is coasting freely:
 
 $$
 m \cdot a = - \left( F_{rr} + F_{aero} + F_{grade} \right)
 $$
 
-dengan:
+where:
 
 - Rolling resistance:
 
@@ -31,47 +31,46 @@ $$
 F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
 $$
 
-- Gaya akibat elevasi jalan:
+- Road grade force:
 
 $$
 F_{grade} = m \cdot g \cdot \sin(\theta)
 $$
 
-Jika coastdown dilakukan dua arah dan dirata-rata:
+After performing coastdown in two opposite directions and averaging:
 
 $$
 -a(v) = C_{rr} \cdot g + \frac{\rho A_f C_d}{2m} v^2
 $$
 
-Sehingga:
+Thus:
 
-- **Intercept regresi** → $C_{rr} \cdot g$  
-- **Slope regresi** → $\tfrac{\rho A_f C_d}{2m}$
-
+- **Regression intercept** → $C_{rr} \cdot g$  
+- **Regression slope** → $\tfrac{\rho A_f C_d}{2m}$  
 
 ---
 
-## 🧪 Prosedur Eksperimen
+##  Experimental Procedure
 
-### 1. Persiapan
-- Ukur **massa kendaraan total** (termasuk sopir & beban uji).
-- Tekanan ban sesuai spesifikasi.
-- Transmisi netral saat uji.
+### 1. Preparation
+- Measure **total vehicle mass** (including driver and payload).
+- Set tire pressure to manufacturer specification.
+- Keep transmission in neutral during the test.
 
-### 2. Lintasan
-- Jalan lurus & datar, minimal 1 km.
-- Angin < 2 m/s (disarankan pagi/sore).
+### 2. Test Track
+- Straight, flat road segment (≥ 1 km).
+- Low wind (< 2 m/s is recommended).
 
-### 3. Pengambilan Data
-- Akselerasi kendaraan ke **100 km/h** (atau sesuai kebutuhan).
-- Lepas akselerator, biarkan meluncur sampai **< 20 km/h**.
-- Rekam **kecepatan vs waktu** tiap 1 detik.
-- Ulangi tes minimal 3 kali di **arah A** dan **arah B**.
+### 3. Data Collection
+- Accelerate vehicle to a target speed (e.g. 100 km/h).
+- Release throttle, allow the vehicle to coast down to < 20 km/h.
+- Record **speed vs. time** at fixed intervals (e.g. 1 Hz).
+- Repeat test at least 3 times in **Direction A** and **Direction B**.
 
 ### 4. Sensor
-Jika menggunakan **proximity sensor ban**:
-- Hitung RPM roda dari jumlah pulsa.
-- Konversi ke kecepatan linear:
+If using a **wheel proximity sensor**:
+- Count wheel RPM from pulses.
+- Convert to linear speed:
 
 $$
 v = \frac{RPM \cdot \pi \cdot D}{60}
@@ -79,12 +78,12 @@ $$
 
 ---
 
-## 📂 Struktur Data
-Format file `.csv` yang dipakai:
+##  Data Format
+The input `.csv` file should contain one column of vehicle speed in km/h:
 
 ```csv
-velocity_kmh
-32.2
-31.9
-31.7
+time velocity_kmh
+1 32.2
+2 31.9
+3 31.7
 ...
