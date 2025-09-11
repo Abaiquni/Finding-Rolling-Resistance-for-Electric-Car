@@ -10,28 +10,32 @@ Metode mengikuti standar **SAE J1263 / J2263**, dengan coastdown dalam **dua ara
 ---
 
 ## ⚙️ Prinsip Fisika
+
 Saat kendaraan meluncur bebas:
 
 $$
-m \cdot a = - \big( F_{rr} + F_{aero} + F_{grade} \big)
+m \cdot a = - \left( F_{rr} + F_{aero} + F_{grade} \right)
 $$
 
 dengan:
 
 - Rolling resistance:
-  $$
-  F_{rr} = C_{rr} \cdot m \cdot g
-  $$
+
+$$
+F_{rr} = C_{rr} \cdot m \cdot g
+$$
 
 - Aerodynamic drag:
-  $$
-  F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
-  $$
+
+$$
+F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
+$$
 
 - Gaya akibat elevasi jalan:
-  $$
-  F_{grade} = m \cdot g \cdot \sin(\theta)
-  $$
+
+$$
+F_{grade} = m \cdot g \cdot \sin(\theta)
+$$
 
 Jika coastdown dilakukan dua arah dan dirata-rata:
 
@@ -39,8 +43,11 @@ $$
 -a(v) = C_{rr} \cdot g + \frac{\rho A_f C_d}{2m} v^2
 $$
 
+Sehingga:
+
 - **Intercept regresi** → $C_{rr} \cdot g$  
-- **Slope regresi** → $\tfrac{\rho A_f C_d}{2m}$  
+- **Slope regresi** → $\tfrac{\rho A_f C_d}{2m}$
+
 
 ---
 
