@@ -1,17 +1,16 @@
 #  Coastdown Test - Estimation of Rolling Resistance Coefficient (CRR)
 
 ##  Description
-This project documents the **Coastdown Test** method to estimate:
-- **CRR (Coefficient of Rolling Resistance)**
-- **Aerodynamic parameter (Cd·Af)**
+This project documents the **Coastdown Test** method to estimate: **CRR (Coefficient of Rolling Resistance)**
+
 
 The procedure follows **SAE J1263 / J2263** standards, using coastdown runs in **two opposite directions** to eliminate the effect of road slope (grade).
 
 ---
 
-## ⚙️ Physics Principle
+## Physics Principle
 
-When a vehicle is coasting freely:
+When a vehicle is coasting freely in straight track:
 
 $$
 m \cdot a = - \left( F_{rr} + F_{aero} + F_{grade} \right)
@@ -53,28 +52,25 @@ Thus:
 ##  Experimental Procedure
 
 ### 1. Preparation
-- Measure **total vehicle mass** (including driver and payload).
-- Set tire pressure to manufacturer specification.
-- Keep transmission in neutral during the test.
+- Measure **total vehicle mass** (including driver).
+- Set tire pressure according to the conditions to be tested.
+- keep the transmission system consistent during testing.
 
 ### 2. Test Track
-- Straight, flat road segment (≥ 1 km).
-- Low wind (< 2 m/s is recommended).
+- Straight, flat track segment (+-3km).
+- Low wind.
+- No outside distraction
 
 ### 3. Data Collection
-- Accelerate vehicle to a target speed (e.g. 100 km/h).
-- Release throttle, allow the vehicle to coast down to < 20 km/h.
-- Record **speed vs. time** at fixed intervals (e.g. 1 Hz).
-- Repeat test at least 3 times in **Direction A** and **Direction B**.
+- Accelerate vehicle to a target speed (e.g. 30 km/h).
+- Release throttle, allow the vehicle to coast down to < 0 km/h.
+- Record **speed vs. time** at fixed intervals (e.g. 1s, or 500ms).
+- Repeat test at least 3 times in **Direction A** and **Direction B** (Direction B is reversed of Direction A), this reversed direction need to be tested to eliminate the effect of grade $$(\theta)$$.
 
 ### 4. Sensor
-If using a **wheel proximity sensor**:
-- Count wheel RPM from pulses.
-- Convert to linear speed:
-
-$$
-v = \frac{RPM \cdot \pi \cdot D}{60}
-$$
+Sensor that being used in this test is **wheel proximity sensor**:
+- Count wheel RPM from pulses (RPM).
+- Convert to linear speed (Km/h):
 
 ---
 
