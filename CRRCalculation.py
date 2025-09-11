@@ -97,3 +97,6 @@ if __name__ == "__main__":
     file_backward = sys.argv[2]
 
     analyze_coastdown(file_forward, file_backward)
+
+
+#ini cuman tambahan
