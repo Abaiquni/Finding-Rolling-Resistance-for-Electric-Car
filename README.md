@@ -1,85 +1,59 @@
-#  Coastdown Test - Estimation of Rolling Resistance Coefficient (CRR)
+#  Coastdown Test - ODE-Based Estimation of Rolling Resistance Coefficient (CRR)
 
-##  Description
-This project documents the **Coastdown Test** method to estimate: **CRR (Coefficient of Rolling Resistance)**
-
-
-The procedure follows **SAE J1263 / J2263** standards, using coastdown runs in **two opposite directions** to eliminate the effect of road slope (grade).
+##  Overview
+This repository documents an **ODE-based method** to estimate the **Coefficient of Rolling Resistance (CRR)** from a coastdown test.  
+The approach uses numerical integration of the vehicle dynamics equation and optimizes CRR by minimizing the error between measured and simulated velocity.
 
 ---
 
-## Physics Principle
+##  Mathematical Model
 
-When a vehicle is coasting freely in straight track:
+When a vehicle is coasting freely on a flat road:
 
 $$
-m \cdot a = - \left( F_{rr} + F_{aero} + F_{grade} \right)
+m \frac{dv}{dt} = -F_{rr} - F_{aero}
 $$
-
-where:
 
 - Rolling resistance:
-
-$$
-F_{rr} = C_{rr} \cdot m \cdot g
-$$
+  $$
+  F_{rr} = C_{rr} \cdot m \cdot g
+  $$
 
 - Aerodynamic drag:
+  $$
+  F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
+  $$
+
+Thus, the ODE for velocity becomes:
 
 $$
-F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
+\frac{dv}{dt} = - C_{rr} g - \frac{\rho A_f C_d}{2m} v^2
 $$
-
-- Road grade force:
-
-$$
-F_{grade} = m \cdot g \cdot \sin(\theta)
-$$
-
-After performing coastdown in two opposite directions and averaging:
-
-$$
--a(v) = C_{rr} \cdot g + \frac{\rho A_f C_d}{2m} v^2
-$$
-
-Thus:
-
-- **Regression intercept** → $C_{rr} \cdot g$  
-- **Regression slope** → $\tfrac{\rho A_f C_d}{2m}$  
 
 ---
 
-##  Experimental Procedure
+##  Estimation Algorithm
 
-### 1. Preparation
-- Measure **total vehicle mass** (including driver).
-- Set tire pressure according to the conditions to be tested.
-- keep the transmission system consistent during testing.
-
-### 2. Test Track
-- Straight, flat track segment (+-3km).
-- Low wind.
-- No outside distraction
-
-### 3. Data Collection
-- Accelerate vehicle to a target speed (e.g. 30 km/h).
-- Release throttle, allow the vehicle to coast down to < 0 km/h.
-- Record **speed vs. time** at fixed intervals (e.g. 1s, or 500ms).
-- Repeat test at least 3 times in **Direction A** and **Direction B** (Direction B is reversed of Direction A), this reversed direction need to be tested to eliminate the effect of grade $$(\theta)$$.
-
-### 4. Sensor
-Sensor that being used in this test is **wheel proximity sensor**:
-- Count wheel RPM from pulses (RPM).
-- Convert to linear speed (Km/h):
+1. **Input data**: measured velocity vs. time from a coastdown test.  
+2. **Initial guess**: set an initial CRR value (e.g. 0.005).  
+3. **Numerical integration**: simulate $v(t)$ by solving the ODE.  
+   - Euler method (simplified):
+     $$
+     v_{i+1} = v_i + \Delta t \left( -C_{rr} g - k v_i^2 \right)
+     $$
+     with:
+     $$
+     k = \frac{0.5 \rho A_f C_d}{m}
+     $$
+   - Or more accurately, Runge–Kutta (RK4) via `scipy.odeint`.  
+4. **Error evaluation**: compare simulated velocity with measured velocity using **Sum of Squared Errors (SSE)**:
+   $$
+   SSE(C_{rr}) = \sum_{i=1}^N \left( v_{measured}(t_i) - v_{predicted}(t_i; C_{rr}) \right)^2
+   $$
+5. **Optimization**: adjust $C_{rr}$ using numerical optimization (`scipy.optimize.minimize`) to minimize SSE.  
+6. **Output**: best-fit $C_{rr}$ and simulated velocity profile.
 
 ---
 
-##  Data Format
-The input `.csv` file should contain one column of vehicle speed in km/h:
+The ODE-based result is smoother and more robust against noise, since it uses the full velocity profile rather than noisy acceleration data.
 
-```csv
-time velocity_kmh
-1 32.2
-2 31.9
-3 31.7
-...
