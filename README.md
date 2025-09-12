@@ -15,10 +15,15 @@ m \frac{dv}{dt} = -F_{rr} - F_{aero}
 $$
 
 - Rolling resistance:
-$$ (F_{rr} = C_{rr} \cdot m \cdot g) $$
+$$
+F_{rr} = C_{rr} \cdot m \cdot g
+$$
 
 - Aerodynamic drag:
-$$ F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2 $$
+
+$$
+F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
+$$
 
 Thus, the ODE for velocity becomes:
 
@@ -60,11 +65,17 @@ $$
 
 6. **Output**: best-fit $$\( C_{rr} \)$$ and simulated velocity profile.
 
+## Example Output
+
+Here is an example of the coastdown fitting result:
+
+![Coastdown Output](images/OutputExample.png)
+
 ---
 
 
 
-The ODE-based result is smoother and more robust against noise, since it uses the full velocity profile rather than noisy acceleration data.
+**The ODE-based result is smoother and more robust against noise, since it uses the full velocity profile rather than noisy acceleration data.**
 
 ---
 
