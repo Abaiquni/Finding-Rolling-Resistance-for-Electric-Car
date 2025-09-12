@@ -69,7 +69,7 @@ $$
 
 Here is an example of the coastdown fitting result:
 
-![Coastdown Output](images/OutputExample.png)
+![Coastdown Output](OutputExample.png)
 
 ---
 
