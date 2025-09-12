@@ -15,14 +15,10 @@ m \frac{dv}{dt} = -F_{rr} - F_{aero}
 $$
 
 - Rolling resistance:
-$$
-F_{rr} = C_{rr} \cdot m \cdot g
-$$
+$$ F_{rr} = C_{rr} \cdot m \cdot g $$
 
 - Aerodynamic drag:
-$$
-F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
-$$
+$$ F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2 $$
 
 Thus, the ODE for velocity becomes:
 
