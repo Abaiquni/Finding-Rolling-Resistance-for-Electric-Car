@@ -5,6 +5,18 @@ This repository documents an ODE-based method to estimate the **Coefficient of R
 The approach uses numerical integration of the vehicle dynamics equation and optimizes CRR by minimizing the error between measured and simulated velocity.
 
 ---
+## Testing Preparation
+- Measure **total vehicle mass** (including driver)
+- Set tire pressure to be tested (in this condition is 80 PSi)
+- Kepp the transmission in constant variable (no gear change)
+- Testing Track should be straight, flat road segment
+- Low wind speed condition
+
+## Data Collection
+- Accelerate vehicle to a target speed (e.g. 25-30 km/h).
+- Release throttle, allow the vehicle to coast down to < 0 km/h.
+- Record **speed vs. time** at fixed intervals (e.g. 1hz).
+- Repeat test at least 3 times in **Direction A** and **Direction B** (direction B is reversed of direction A) this performed to exclude effect of grade $$(\theta)$$ road.
 
 ## Mathematical Model
 
