@@ -15,6 +15,7 @@ m \frac{dv}{dt} = -F_{rr} - F_{aero}
 $$
 
 - Rolling resistance:
+
 $$
 F_{rr} = C_{rr} \cdot m \cdot g
 $$
