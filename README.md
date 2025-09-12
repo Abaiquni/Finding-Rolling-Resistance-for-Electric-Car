@@ -1,12 +1,12 @@
-#  Coastdown Test - ODE-Based Estimation of Rolling Resistance Coefficient (CRR)
+# Coastdown Test - ODE-Based Estimation of Rolling Resistance Coefficient (CRR)
 
-##  Overview
-This repository documents an **ODE-based method** to estimate the **Coefficient of Rolling Resistance (CRR)** from a coastdown test.  
+## Overview
+This repository documents an ODE-based method to estimate the **Coefficient of Rolling Resistance (CRR)** from a coastdown test.  
 The approach uses numerical integration of the vehicle dynamics equation and optimizes CRR by minimizing the error between measured and simulated velocity.
 
 ---
 
-##  Mathematical Model
+## Mathematical Model
 
 When a vehicle is coasting freely on a flat road:
 
@@ -15,14 +15,14 @@ m \frac{dv}{dt} = -F_{rr} - F_{aero}
 $$
 
 - Rolling resistance:
-  $$
-  F_{rr} = C_{rr} \cdot m \cdot g
-  $$
+$$
+F_{rr} = C_{rr} \cdot m \cdot g
+$$
 
 - Aerodynamic drag:
-  $$
-  F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
-  $$
+$$
+F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
+$$
 
 Thus, the ODE for velocity becomes:
 
@@ -32,28 +32,62 @@ $$
 
 ---
 
-##  Estimation Algorithm
+## Estimation Algorithm
 
 1. **Input data**: measured velocity vs. time from a coastdown test.  
+
 2. **Initial guess**: set an initial CRR value (e.g. 0.005).  
-3. **Numerical integration**: simulate $v(t)$ by solving the ODE.  
-   - Euler method (simplified):
-     $$
-     v_{i+1} = v_i + \Delta t \left( -C_{rr} g - k v_i^2 \right)
-     $$
-     with:
-     $$
-     k = \frac{0.5 \rho A_f C_d}{m}
-     $$
-   - Or more accurately, Runge–Kutta (RK4) via `scipy.odeint`.  
+
+3. **Numerical integration**: simulate \( v(t) \) by solving the ODE.  
+
+Euler method (simplified):
+
+$$
+v_{i+1} = v_i + \Delta t \left( -C_{rr} g - k v_i^2 \right)
+$$
+
+with:
+
+$$
+k = \frac{0.5 \rho A_f C_d}{m}
+$$
+
+More accurately, Runge–Kutta (RK4) can be used via `scipy.odeint`.
+
 4. **Error evaluation**: compare simulated velocity with measured velocity using **Sum of Squared Errors (SSE)**:
-   $$
-   SSE(C_{rr}) = \sum_{i=1}^N \left( v_{measured}(t_i) - v_{predicted}(t_i; C_{rr}) \right)^2
-   $$
-5. **Optimization**: adjust $C_{rr}$ using numerical optimization (`scipy.optimize.minimize`) to minimize SSE.  
-6. **Output**: best-fit $C_{rr}$ and simulated velocity profile.
+
+$$
+SSE(C_{rr}) = \sum_{i=1}^N \left( v_{measured}(t_i) - v_{predicted}(t_i; C_{rr}) \right)^2
+$$
+
+5. **Optimization**: adjust \( C_{rr} \) using numerical optimization (`scipy.optimize.minimize`) to minimize SSE.  
+
+6. **Output**: best-fit \( C_{rr} \) and simulated velocity profile.
 
 ---
 
+## Example Results
+
+From the provided dataset:
+
+- Linear Regression Method (\(-a\) vs \(v^2\)):
+
+$$
+C_{rr} \approx 0.00255
+$$
+
+- ODE Curve Fitting Method:
+
+$$
+C_{rr} \approx 0.00209
+$$
+
 The ODE-based result is smoother and more robust against noise, since it uses the full velocity profile rather than noisy acceleration data.
 
+---
+
+## How to Run
+
+1. Install dependencies:
+```bash
+pip install numpy pandas matplotlib scipy
