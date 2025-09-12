@@ -20,9 +20,9 @@ F_{rr} = C_{rr} \cdot m \cdot g
 $$
 
 - Aerodynamic drag:
-$$...
+$$
 F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
-$$...
+$$
 
 Thus, the ODE for velocity becomes:
 
