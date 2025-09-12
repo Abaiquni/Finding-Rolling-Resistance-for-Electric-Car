@@ -16,12 +16,12 @@ $$
 
 - Rolling resistance:
 $$
-F_{rr} = C_{rr} \cdot m \cdot g
+\F_{rr} = C_{rr} \cdot m \cdot g
 $$
 
 - Aerodynamic drag:
 $$
-F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
+\F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2
 $$
 
 Thus, the ODE for velocity becomes:
@@ -60,34 +60,15 @@ $$
 SSE(C_{rr}) = \sum_{i=1}^N \left( v_{measured}(t_i) - v_{predicted}(t_i; C_{rr}) \right)^2
 $$
 
-5. **Optimization**: adjust \( C_{rr} \) using numerical optimization (`scipy.optimize.minimize`) to minimize SSE.  
+5. **Optimization**: adjust $$\( C_{rr} \)$$ using numerical optimization (`scipy.optimize.minimize`) to minimize SSE.  
 
-6. **Output**: best-fit \( C_{rr} \) and simulated velocity profile.
+6. **Output**: best-fit $$\( C_{rr} \)$$ and simulated velocity profile.
 
 ---
 
-## Example Results
 
-From the provided dataset:
-
-- Linear Regression Method (\(-a\) vs \(v^2\)):
-
-$$
-C_{rr} \approx 0.00255
-$$
-
-- ODE Curve Fitting Method:
-
-$$
-C_{rr} \approx 0.00209
-$$
 
 The ODE-based result is smoother and more robust against noise, since it uses the full velocity profile rather than noisy acceleration data.
 
 ---
 
-## How to Run
-
-1. Install dependencies:
-```bash
-pip install numpy pandas matplotlib scipy
