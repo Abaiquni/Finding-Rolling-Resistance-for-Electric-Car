@@ -15,7 +15,7 @@ m \frac{dv}{dt} = -F_{rr} - F_{aero}
 $$
 
 - Rolling resistance:
-$$ F_{rr} = C_{rr} \cdot m \cdot g $$
+$$ (F_{rr} = C_{rr} \cdot m \cdot g) $$
 
 - Aerodynamic drag:
 $$ F_{aero} = \tfrac{1}{2} \rho A_f C_d v^2 $$
@@ -30,11 +30,11 @@ $$
 
 ## Estimation Algorithm
 
-1. **Input data**: measured velocity vs. time from a coastdown test.  
+1. **Input data**: measured time vs velocity(km/h) from a coastdown test.  
 
 2. **Initial guess**: set an initial CRR value (e.g. 0.005).  
 
-3. **Numerical integration**: simulate \( v(t) \) by solving the ODE.  
+3. **Numerical integration**: simulate $$\( v(t) \)$$ by solving the ODE.  
 
 Euler method (simplified):
 
