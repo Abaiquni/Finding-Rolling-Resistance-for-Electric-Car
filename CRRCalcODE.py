@@ -7,12 +7,15 @@ import matplotlib.pyplot as plt
 # Constants (assumed)
 g = 9.81
 rho = 1.225   # air density (kg/m³)
-Af = 0.4294      # frontal area (m²)
-Cd = 0.1495     # drag coefficient
-m = 78      # vehicle mass (kg)
+Af = 0.4294286      # frontal area (m²)
+Cd = 0.1495849     # drag coefficient
+m = 75      # vehicle mass (kg) 49+26
 
-# Load experimental data (from uploaded 2.csv)
-file_path = "1.csv"
+#tire pressure must be constant during the test 
+
+
+# Load experimental data (from uploaded 1.csv)
+file_path = r"F:\OneDrive - UGM 365\UGM Akademik\Semester 7\Skripsi\Workplace\VehicleModel\CRRFinding\Data\Michelin60B.csv"
 df = pd.read_csv(file_path, header=None)
 df.columns = ["velocity_kmh"]
 
