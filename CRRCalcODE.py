@@ -9,19 +9,40 @@ g = 9.81
 rho = 1.225   # air density (kg/m³)
 Af = 0.4294286      # frontal area (m²)
 Cd = 0.1495849     # drag coefficient
-m = 75      # vehicle mass (kg) 49+26
+m = 76     # vehicle mass (kg) 49+26
 
-#tire pressure must be constant during the test 
-
-
-# Load experimental data (from uploaded 1.csv)
-file_path = r"F:\OneDrive - UGM 365\UGM Akademik\Semester 7\Skripsi\Workplace\VehicleModel\CRRFinding\Data\Michelin60B.csv"
+# Load experimental data
+file_path = r"F:\OneDrive - UGM 365\UGM Akademik\Semester 7\Skripsi\Workplace\VehicleModel\CRRFinding\Data\rolling2.csv"
 df = pd.read_csv(file_path, header=None)
-df.columns = ["velocity_kmh"]
 
-# Convert to m/s
-v_measured = df["velocity_kmh"].values * 1000 / 3600
-t = np.arange(len(v_measured))  # assume 1s sampling
+# Extract columns and remove empty rows
+df.columns = ["timestamp", "speed_kmh"]
+df = df.dropna()  # Remove rows with NaN values
+
+# Extract values
+timestamp = df["timestamp"].values
+v_measured_kmh = df["speed_kmh"].values
+
+# Remove rows where timestamp is not strictly increasing
+valid_idx = np.ones(len(timestamp), dtype=bool)
+for i in range(1, len(timestamp)):
+    if timestamp[i] <= timestamp[i-1]:
+        valid_idx[i] = False
+
+timestamp = timestamp[valid_idx]
+v_measured_kmh = v_measured_kmh[valid_idx]
+
+# Convert speed to m/s
+v_measured = v_measured_kmh / 3.6
+
+# Use the actual timestamp as time (already in seconds)
+t = timestamp
+
+print(f"Number of valid data points: {len(v_measured)}")
+print(f"Time range: {t[0]:.4f} s to {t[-1]:.4f} s")
+print(f"Initial velocity: {v_measured[0]:.2f} m/s ({v_measured_kmh[0]:.2f} km/h)")
+print(f"Final velocity: {v_measured[-1]:.2f} m/s ({v_measured_kmh[-1]:.2f} km/h)")
+print()
 
 # ODE model
 def dvdt(v, t, Crr):
@@ -38,25 +59,43 @@ def cost(Crr):
     return np.sum((v_measured - v_pred)**2)
 
 # Optimization
-res = minimize(cost, x0=[0.0025], bounds=[(0.001, 0.02)])
+print("Starting optimization...")
+res = minimize(cost, x0=[0.0015], bounds=[(0.001, 0.002)], method='L-BFGS-B')
 Crr_opt = res.x[0]
+
+print(f"Optimization successful!")
+print(f"Optimal CRR: {Crr_opt:.6f}")
+print(f"Cost (SSE): {res.fun:.4f}")
+print()
 
 # Simulate with optimal CRR
 v_fit = simulate(Crr_opt)
-# Convert to km/h for plotting
-v_kmh = v_measured * 3.6
-v_fit_kmh = v_fit * 3.6
 
-# Plot measured vs simulated in km/h
-plt.figure(figsize=(8,6))
-plt.plot(t, v_kmh, "o", markersize=3, label="Measured (km/h)")
-plt.plot(t, v_fit_kmh, "r-", label=f"Fitted (CRR={Crr_opt:.4f})")
-plt.xlabel("Time [s]")
-plt.ylabel("Velocity [km/h]")
-plt.title("Coastdown Test - Measured vs Simulated (km/h vs time)")
-plt.legend()
-plt.grid(True)
+# Plot measured vs simulated
+# Plot measured vs simulated
+plt.figure(figsize=(12, 10))
+plt.plot(t, v_measured_kmh, "o", markersize=3, label="Experimental Measured", alpha=0.7)
+plt.plot(t, v_fit * 3.6, "r-", linewidth=2, label=f"Fitted (CRR={Crr_opt:.6f})")
+
+# Set label dengan ukuran font lebih besar
+plt.xlabel("Time (s)", fontsize=20)  # Ukuran font 14
+plt.ylabel("Velocity (km/h)", fontsize=20)  # Ukuran font 14
+
+# Anda juga bisa memperbesar font untuk judul dan legend
+plt.title("Coastdown Test - Experimental vs Simulated", fontsize=20)
+plt.legend(fontsize=20)
+
+# Perbesar font ticks (angka pada sumbu)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+
+plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-Crr_opt
+# Calculate residuals
+residuals = v_measured_kmh - (v_fit * 3.6)
+print(f"Mean residual: {np.mean(residuals):.4f} km/h")
+print(f"Std residual: {np.std(residuals):.4f} km/h")
+print(f"Max absolute residual: {np.max(np.abs(residuals)):.4f} km/h")
+print(f"\nOptimal CRR: {Crr_opt:.6f}")
